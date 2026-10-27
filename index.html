@@ -6,10 +6,12 @@
 <title>Contre le colonisateur · Le royaume du Dahomey</title>
 <meta name="description" content="RPG 3D d'aventure : incarne un héros du Dahomey face à la colonisation. Épreuves des esprits, combats et missions.">
 <link rel="stylesheet" href="style.css">
-<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/jsm/"}}</script>
 </head>
 <body>
 <canvas id="gl"></canvas>
+<div id="loader"><div><b>Contre le colonisateur</b><span id="loadTxt">Chargement du royaume…</span><i><u id="loadBar"></u></i></div></div>
+<div id="cineBars" class="hide"><i></i><i></i><button id="cineSkip" class="b ghost">Passer ▸</button><p id="cineTxt"></p></div>
 
 <!-- title -->
 <section id="title" class="scr on">
@@ -36,7 +38,7 @@
   <div class="box wide">
     <h2>Quelle sera ta voie ?</h2>
     <div class="cards" id="cards"></div>
-    <label class="nm">Ton nom <input id="hName" maxlength="16" value="Kofi" autocomplete="off"></label>
+    <label class="nm">Ton nom <input id="hName" maxlength="16" value="Kofi" autocomplete="off"><span class="sexs"><button id="sexM" class="b on">Homme</button><button id="sexF" class="b">Femme</button></span></label>
     <div class="row"><button id="bBack" class="b ghost">Retour</button><button id="bStart" class="b big">Commencer l'aventure</button></div>
   </div>
 </section>
@@ -48,6 +50,7 @@
     <label>Musique <input type="range" id="sMusic" min="0" max="100"></label>
     <label>Effets sonores <input type="range" id="sSfx" min="0" max="100"></label>
     <label>Ombres <select id="sShadow"><option value="0">Désactivées</option><option value="1">Moyennes</option><option value="2">Hautes</option></select></label>
+    <label>Qualité visuelle <select id="sQual"><option value="0">Légère</option><option value="1">Équilibrée</option><option value="2">Maximale</option></select></label>
     <label>Sensibilité de la caméra <input type="range" id="sSens" min="30" max="200"></label>
     <div class="row"><button id="bSetBack" class="b big">Retour</button></div>
   </div>
@@ -69,14 +72,14 @@
 <div id="banner"></div>
 
 <!-- dialogue -->
-<div id="dialog" class="hide"><b id="dWho"></b><p id="dTxt"></p><small>Clique ou appuie sur Entrée</small></div>
+<div id="dialog" class="hide"><b id="dWho"></b><p id="dTxt"></p><div id="dChoices"></div><small id="dHint">Clique ou appuie sur Entrée</small></div>
 
 <!-- trial -->
 <section id="trial" class="scr"><div class="box wide"><h2 id="tTitle"></h2><p id="tIntro" class="lead"></p><div id="tBody"></div><div class="row"><button id="tClose" class="b ghost">Quitter l'épreuve</button></div></div></section>
 
 <!-- menu -->
 <section id="menu" class="scr"><div class="box wide">
-  <div class="tabs" id="mTabs"><button data-t="stat" class="on">Statut</button><button data-t="pow">Pouvoirs</button><button data-t="inv">Inventaire</button><button data-t="quest">Quêtes</button><button data-t="sys">Système</button></div>
+  <div class="tabs" id="mTabs"><button data-t="stat" class="on">Statut</button><button data-t="pow">Pouvoirs</button><button data-t="inv">Inventaire</button><button data-t="quest">Quêtes</button><button data-t="codex">Journal</button><button data-t="sys">Système</button></div>
   <div id="mBody"></div>
   <div class="row"><button id="mClose" class="b big">Reprendre</button></div>
 </div></section>

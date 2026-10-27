@@ -54,6 +54,8 @@ export const ITEMS = {
   potion: { name: "Tisane des anciens", icon: "🍶", heal: 80, desc: "Soigne 80 PV." },
   amulette: { name: "Amulette de Legba", icon: "🔮", desc: "Un porte-bonheur offert par le doyen. +5 PV max.", maxhp: 5 },
   fer: { name: "Fer d'acier", icon: "🔩", desc: "Un morceau de métal étranger. Utile pour les forgerons." },
+  carte: { name: "Carte d'Agbo", icon: "🗺", desc: "Une carte dessinée à la main : trois routes vers Abomey, marquées de croix rouges." },
+  talisman: { name: "Talisman de fer", icon: "✦", desc: "Forgé par Hounsou. +10 PV max.", maxhp: 10 },
 };
 
 /* Chapter 1 flow. stage: 0 talk elder, 1 trials, 2 ridge, 3 patrol, 4 boss, 5 report, 6 done */
@@ -62,16 +64,35 @@ export const STAGES = [
   { t: "L'épreuve des esprits", d: "Passe l'épreuve de l'esprit pour recevoir son pouvoir." },
   { t: "Éclaireur de la côte", d: "Monte sur la colline à l'est et observe le navire." },
   { t: "La patrouille", d: "Repousse 4 soldats près du camp de la côte." },
-  { t: "Le sorcier traître", d: "Affronte Agbo, le sorcier vendu aux étrangers." },
+  { t: "Le sorcier traître", d: "Rejoins la case d'Agbo, au sud du camp, et affronte-le." },
   { t: "Rapport au doyen", d: "Reviens au village et raconte ce que tu as vu." },
   { t: "Chapitre 1 terminé", d: "L'ombre grandit. À suivre…" },
 ];
 
 export const PROLOGUE = [
-  "Dahomey, sur la côte. Les saisons passent comme les tambours : régulières, fières.",
-  "Mais ce matin, tu as vu quelque chose que les anciens redoutaient. Un grand navire, des voiles blanches… et des hommes qui regardent la terre comme s'ils pouvaient la prendre.",
-  "Le roi est averti. Les guerrières s'entraînent. Les sorciers consultent les signes.",
-  "Et toi ? Tu n'es qu'un jeune du village. Pourtant, on t'a vu : le doyen veut te parler.",
+  "Royaume du Dahomey, sur la côte. Les saisons passent comme les tambours : régulières, fières.",
+  "Les anciens racontent que les rois ont toujours su lire le vent. Cette année, le vent a changé.",
+  "Ce matin, caché dans les feuillages, tu as vu ce que personne ne voulait croire : un grand navire aux voiles blanches. Et des hommes qui regardent la terre comme s'ils pouvaient la prendre.",
+  "Tu n'es qu'un jeune du village d'Adjahoué. Mais on t'a vu courir. Le doyen Adjovi te fait demander.",
 ];
+export const BACKSTORY = {
+  sorcier: "Tu as grandi auprès du doyen Adjovi, qui t'a enseigné à lire les signes. Tu sais écouter les esprits, mais jamais encore tu n'as été mis à l'épreuve.",
+  guerrier: "Depuis l'enfance, tu t'entraînes avec Nanou, qui sert le roi. Tu rêves de rejoindre l'armée. Aujourd'hui, ton village a besoin de toi avant le roi.",
+  archer: "Fils ou fille de chasseurs, tu connais la forêt mieux que les routes. Tu as vu le navire le premier, et tu sais combien de temps il faut pour traverser les bois.",
+};
+/* In-game journal: short facts, flagged for verification in docs/HISTOIRE.md */
+export const CODEX = {
+  dahomey: { t: "Le royaume du Dahomey", d: "Royaume ouest-africain dont la capitale était Abomey, et dont la côte comptait un grand port, Ouidah. Il est l'un des États les plus organisés de la région, avec une armée, une administration et des artistes de cour.", at: 0 },
+  agojie: { t: "Les Agojie", d: "Corps de guerrières au service du roi du Dahomey. Les Européens les ont appelées « amazones ». Elles s'entraînaient dès le plus jeune âge.", at: "nanou" },
+  vodun: { t: "Le Vodun", d: "Religion et ensemble de croyances très répandues dans la région. Les esprits (Legba, Hévioso, Gu, Aziza...) y ont chacun un domaine. Dans le jeu, leurs épreuves sont une invention de gameplay, pas un vrai rituel.", at: "shrine" },
+  reliefs: { t: "Les bas-reliefs d'Abomey", d: "Les palais d'Abomey étaient ornés de bas-reliefs en argile polychrome racontant l'histoire des rois à travers des symboles : le lion, le buffle, le requin...", at: "wall" },
+  navire: { t: "L'arrivée des navires", d: "Dans les années 1890, la France cherche à étendre son contrôle sur la côte du Dahomey. Les guerres franco-dahoméennes (1890, puis 1892-1894) opposent les deux armées.", at: "ridge" },
+  agbo: { t: "Agbo, le traître", d: "Personnage fictif. Dans l'histoire réelle, des alliances entre chefs locaux et puissances étrangères ont existé, pour des raisons très diverses : peur, ambition, rivalités anciennes.", at: "boss" },
+  fer: { t: "Le fer et la forge", d: "Le travail du fer a une grande place dans la culture de la région. Gu est l'esprit associé au fer et à la guerre.", at: "gu" },
+};
+export const SIDE = {
+  herbes: { t: "Les herbes de Mère Akossiba", d: "Rapporte 3 plantes médicinales à Mère Akossiba.", need: 3 },
+  fer: { t: "Le fer de Hounsou", d: "Rapporte 2 morceaux de fer d'acier pris aux soldats pour le forgeron Hounsou.", need: 2 },
+};
 
 export const FOREWORD = "Les lieux, les dates et les noms des personnages sont romancés. Voir docs/HISTOIRE.md pour ce qui est vérifié ou à vérifier.";

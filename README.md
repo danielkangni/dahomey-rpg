@@ -19,8 +19,17 @@ puis ouvrir http://localhost:8300
 ZQSD/WASD ou flèches : se déplacer · glisser la souris : caméra · molette : zoom · Espace ou clic : attaquer · 1 et 2 : pouvoirs · E : interagir · H : se soigner · Échap : menu · Maj : courir.
 Sur téléphone : joystick gauche, glisser à droite pour la caméra, boutons à l'écran.
 
+## Visuel et son
+- Textures réalistes (Poly Haven, CC0), ciel et éclairage par image HDRI, ombres douces, bloom, grain et vignette, végétation animée par le vent.
+- Musique originale synthétisée, inspirée de rythmes béninois, qui change selon la situation (village, exploration, combat, boss, sanctuaire).
+- Qualité réglable dans les réglages (légère, équilibrée, maximale).
+- Modèles de personnages remplaçables : voir `docs/PERSONNAGES.md`.
+
 ## Structure
 - `src/world.js` : terrain, village, sanctuaires, camp, navire
+- `src/buildings.js`, `src/foliage.js` : architecture fon, bas-reliefs, arbres, palmiers, herbe
+- `src/characters.js`, `src/presets.js`, `src/glbmodels.js` : personnages articulés et import de modèles .glb
+- `src/audio.js`, `src/post.js`, `src/particles.js`, `src/cinematic.js` : musique, effets visuels, scènes
 - `src/actors.js` : joueur, ennemis, projectiles, effets
 - `src/trials.js` : épreuves (énigme, rythme, timing)
 - `src/main.js` : boucle, quêtes, dialogues, menus

@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { makeHuman, animateHuman, std, sph } from "./models.js";
+import { animate, hit as hitChar, kill as killChar } from "./characters.js";
+import { heroModel, NPC } from "./presets.js";
 import { height, SEA_LEVEL } from "./world.js";
 import { CLASSES, SPIRITS } from "./data.js";
 import { dmgOf } from "./state.js";
@@ -54,21 +55,21 @@ export class Shots {
 export class Player {
   constructor(scene, state) {
     this.scene = scene; this.s = state; const c = CLASSES[state.cls];
-    this.mesh = makeHuman({ cloth: c.color, accent: c.accent, weapon: c.weapon, hat: c.id === "sorcier" ? "sorcier" : c.id === "guerrier" ? "plume" : null, cape: c.id === "guerrier" ? 0x3a1a10 : c.id === "sorcier" ? 0x1a2260 : 0x1f4a28, sleeve: c.id !== "archer", pants: c.id === "archer" ? 0x3a2a1a : 0x4a3322 });
+    this.char = heroModel(state.cls, state.sex || "m"); this.mesh = this.char.root;
     scene.add(this.mesh); [this.x, this.z] = state.pos; this.yaw = 0; this.speed = 0; this.atk = 0; this.atkAnim = 0; this.cd = { p1: 0, p2: 0 }; this.inv = 0; this.dash = 0; this.dx = 0; this.dz = 1; this.stun = 0;
     this.shadow = new THREE.Mesh(new THREE.CircleGeometry(0.55, 14), new THREE.MeshBasicMaterial({ color: 0, transparent: true, opacity: 0.28, depthWrite: false })); this.shadow.rotation.x = -Math.PI / 2; scene.add(this.shadow);
-    this.aura = new THREE.PointLight(c.id === "sorcier" ? 0xffc86a : 0xffe2b0, c.id === "sorcier" ? 3 : 0.0, 8, 2); this.mesh.add(this.aura); this.aura.position.set(0, 2, 0);
+    this.aura = new THREE.PointLight(c.id === "sorcier" ? 0xffc86a : 0xffe2b0, c.id === "sorcier" ? 6 : 0.0, 9, 2); this.mesh.add(this.aura); this.aura.position.set(0, 2, 0);
   }
   get y() { return height(this.x, this.z); }
   update(dt, inp, world, ctx) {
-    const s = this.s; this.atk = Math.max(0, this.atk - dt); this.atkAnim = Math.max(0, this.atkAnim - dt * 3); this.cd.p1 = Math.max(0, this.cd.p1 - dt); this.cd.p2 = Math.max(0, this.cd.p2 - dt); this.inv = Math.max(0, this.inv - dt); this.stun = Math.max(0, this.stun - dt);
+    const s = this.s; this.atk = Math.max(0, this.atk - dt); this.atkAnim = Math.max(0, this.atkAnim - dt * 2.4); this.cd.p1 = Math.max(0, this.cd.p1 - dt); this.cd.p2 = Math.max(0, this.cd.p2 - dt); this.inv = Math.max(0, this.inv - dt); this.stun = Math.max(0, this.stun - dt);
     let mx = inp.mx, mz = inp.mz; const ml = Math.hypot(mx, mz); if (ml > 1) { mx /= ml; mz /= ml; }
     const v = (inp.run ? 7.6 : 5.0) * (this.atkAnim > 0.5 ? 0.45 : 1);
     if (this.dash > 0) { this.dash -= dt; moveCollide(this, this.dx * 17 * dt, this.dz * 17 * dt, 0.45, world); }
     else if (ml > 0.05) { moveCollide(this, mx * v * dt, mz * v * dt, 0.45, world); this.dx = mx / Math.max(ml, 1); this.dz = mz / Math.max(ml, 1); const ty = Math.atan2(mx, mz); let d = ty - this.yaw; d = Math.atan2(Math.sin(d), Math.cos(d)); this.yaw += d * Math.min(1, dt * 14); }
     this.speed = this.dash > 0 ? 8 : ml > 0.05 ? v * Math.min(1, ml) : 0;
-    this.mesh.position.set(this.x, this.y, this.z); this.mesh.rotation.y = this.yaw; this.shadow.position.set(this.x, this.y + 0.07, this.z); animateHuman(this.mesh, dt, this.speed, this.atkAnim);
-    if (this.s.cls === "sorcier") this.aura.intensity = 2 + Object.keys(s.powers).length * 1.4;
+    this.mesh.position.set(this.x, this.y, this.z); this.mesh.rotation.y = this.yaw; this.shadow.position.set(this.x, this.y + 0.07, this.z); animate(this.char, dt, this.speed, { attack: this.atkAnim, look: 0 });
+    if (this.s.cls === "sorcier") this.aura.intensity = 3 + Object.keys(s.powers).length * 1.6;
   }
   aimTo(enemies, maxR = 16) { let best = null, bd = maxR * maxR; for (const e of enemies) { if (e.dead) continue; const d = (e.x - this.x) ** 2 + (e.z - this.z) ** 2; if (d < bd) { bd = d; best = e; } } if (best) { const dx = best.x - this.x, dz = best.z - this.z, l = Math.hypot(dx, dz); this.yaw = Math.atan2(dx, dz); return [dx / l, dz / l, best]; } return [Math.sin(this.yaw), Math.cos(this.yaw), null]; }
   attack(ctx) {
@@ -88,19 +89,19 @@ export class Player {
     if (pw.id === "tir") { sfxs.arrow(); const base = Math.atan2(dx, dz); for (const d of [-0.22, 0, 0.22]) ctx.shots.fire({ x: this.x, y: this.y + 1.2, z: this.z, dx: Math.sin(base + d), dz: Math.cos(base + d), speed: 32, dmg: Math.round(dmgOf(s, "arrow") * 0.9), friendly: true, arrow: true, pierce: true }); }
     return true;
   }
-  hurt(dmg, ctx) { if (this.inv > 0) return false; this.inv = 0.45; this.s.hp = Math.max(0, this.s.hp - dmg); sfxs.hurt(); ctx.fx.text(this.x, this.y, this.z, "-" + dmg, "#ff6b60"); ctx.fx.hit(this.x, this.y, this.z, 0xff5a4a); return true; }
+  hurt(dmg, ctx) { if (this.inv > 0) return false; this.inv = 0.45; this.s.hp = Math.max(0, this.s.hp - dmg); sfxs.hurt(); ctx.fx.text(this.x, this.y, this.z, "-" + dmg, "#ff6b60"); hitChar(this.char); ctx.fx.hit(this.x, this.y, this.z, 0xff5a4a); return true; }
 }
 
 /* ---------- enemies ---------- */
 const TYPES = {
-  soldat: { name: "Soldat étranger", hp: 46, dmg: 9, speed: 3.3, xp: 26, ranged: true, scale: 1, opts: { cloth: 0x2a3f7a, pants: 0xe9e3d0, helmet: true, weapon: "rifle", accent: 0xe0a93b, sleeve: true, skin: 0xd7a07f, cape: 0xb02a2a } },
-  boss: { name: "Agbo le Traître", hp: 300, dmg: 13, speed: 3.6, xp: 180, ranged: true, scale: 1.35, boss: true, opts: { cloth: 0x1a1013, pants: 0x14100d, mask: 0xb02a2a, weapon: "dark", accent: 0xb02a2a, sleeve: true, cape: 0x4a0d0d, hat: "plume" } },
+  soldat: { name: "Soldat étranger", hp: 46, dmg: 9, speed: 3.3, xp: 26, ranged: true, scale: 1, make: () => NPC.soldat() },
+  boss: { name: "Agbo le Traître", hp: 300, dmg: 13, speed: 3.6, xp: 180, ranged: true, scale: 1.3, boss: true, make: () => NPC.agbo() },
 };
 export class Enemies {
   constructor(scene, world, cam) { this.scene = scene; this.world = world; this.cam = cam; this.list = []; this.bars = []; }
   spawn(type, x, z) {
-    const T = TYPES[type], m = makeHuman(T.opts); m.scale.multiplyScalar(T.scale); m.userData.rifle = !!T.ranged; this.scene.add(m);
-    const e = { type, T, x, z, hx: x, hz: z, y: height(x, z), mesh: m, hp: T.hp, max: T.hp, dead: false, scale: T.scale, cd: 1 + Math.random() * 2, atk: 0, stun: 0, tele: 0, state: "idle", yaw: Math.random() * 6, wander: 0, charge: 0, phase: 0 };
+    const T = TYPES[type], ch = T.make(), m = ch.root; this.scene.add(m);
+    const e = { char: ch, type, T, x, z, hx: x, hz: z, y: height(x, z), mesh: m, hp: T.hp, max: T.hp, dead: false, scale: T.scale, cd: 1 + Math.random() * 2, atk: 0, stun: 0, tele: 0, state: "idle", yaw: Math.random() * 6, wander: 0, charge: 0, phase: 0 };
     const bar = new THREE.Group(), bg = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 0.16), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.7, depthTest: false })), fg = new THREE.Mesh(new THREE.PlaneGeometry(1.36, 0.1), new THREE.MeshBasicMaterial({ color: T.boss ? 0xe5a03a : 0xe5453a, depthTest: false }));
     fg.position.z = 0.01; bg.renderOrder = 11; fg.renderOrder = 12; bar.add(bg, fg); bar.visible = false; this.scene.add(bar); e.bar = bar; e.fg = fg; this.list.push(e); return e;
   }
@@ -109,7 +110,7 @@ export class Enemies {
   update(dt, ctx) {
     const P = ctx.player;
     for (const e of this.list) {
-      if (e.dead) { e.fade -= dt; e.mesh.rotation.x = Math.min(1.5, e.mesh.rotation.x + dt * 4); e.mesh.position.y = e.y - (1 - Math.max(0, e.fade)) * 1.2; if (e.fade <= 0) { this.scene.remove(e.mesh); } continue; }
+      if (e.dead) { e.fade -= dt; animate(e.char, dt, 0, {}); e.mesh.position.y = e.y - (1 - Math.min(1, Math.max(0, e.fade))) * 0.6; if (e.fade <= 0 && e.mesh.parent) { this.scene.remove(e.mesh); } continue; }
       e.cd -= dt; e.atk = Math.max(0, e.atk - dt); e.stun = Math.max(0, e.stun - dt); e.tele = Math.max(0, e.tele - dt);
       const dx = P.x - e.x, dz = P.z - e.z, d = Math.hypot(dx, dz), aggro = e.T.boss ? 26 : 16, home = Math.hypot(e.hx - e.x, e.hz - e.z);
       let speed = 0, mx = 0, mz = 0;
@@ -128,9 +129,9 @@ export class Enemies {
       }
       if (speed > 0) { moveCollide(e, mx * speed * dt, mz * speed * dt, 0.5 * e.scale, this.world); if (e.state === "idle") e.yaw = Math.atan2(mx, mz); }
       e.y = height(e.x, e.z); e.mesh.position.set(e.x, e.y, e.z); let dy = e.yaw - e.mesh.rotation.y; dy = Math.atan2(Math.sin(dy), Math.cos(dy)); e.mesh.rotation.y += dy * Math.min(1, dt * 10);
-      animateHuman(e.mesh, dt, speed, e.tele > 0 ? 0.8 : e.atk);
+      animate(e.char, dt, speed, { attack: e.atk > 0 ? Math.min(1, e.atk * 2) : 0, aim: e.tele > 0 || e.state === "chase", look: 0 });
       e.bar.visible = e.hp < e.max || e.state === "chase"; e.bar.position.set(e.x, e.y + 2.3 * e.scale, e.z); e.bar.quaternion.copy(this.cam.quaternion); e.fg.scale.x = Math.max(0.001, e.hp / e.max); e.fg.position.x = -0.68 * (1 - e.hp / e.max);
     }
   }
-  damage(e, dmg, kx, kz) { e.hp -= dmg; e.state = "chase"; if (kx || kz) { const l = Math.hypot(kx, kz) || 1; moveCollide(e, kx / l * 0.5, kz / l * 0.5, 0.5 * e.scale, this.world); } if (e.hp <= 0 && !e.dead) { e.dead = true; e.fade = 1.4; e.bar.visible = false; return true; } return false; }
+  damage(e, dmg, kx, kz) { e.hp -= dmg; e.state = "chase"; if (kx || kz) { const l = Math.hypot(kx, kz) || 1; moveCollide(e, kx / l * 0.5, kz / l * 0.5, 0.5 * e.scale, this.world); } hitChar(e.char); if (e.hp <= 0 && !e.dead) { e.dead = true; e.fade = 2.2; e.bar.visible = false; killChar(e.char); return true; } return false; }
 }

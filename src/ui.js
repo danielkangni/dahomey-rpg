@@ -1,4 +1,4 @@
-import { CLASSES, ITEMS, SPIRITS, STAGES } from "./data.js";
+import { CLASSES, ITEMS, SPIRITS, STAGES, CODEX, SIDE } from "./data.js";
 import { xpNeed, INV_MAX } from "./state.js";
 import { sfxs } from "./audio.js";
 
@@ -22,6 +22,10 @@ export function say(lines) {
   });
 }
 
+export function choose(who, text, options) {
+  return new Promise((resolve) => { const box = $("dialog"); box.classList.remove("hide"); box.onclick = null; $("dWho").textContent = who; $("dTxt").textContent = text; $("dHint").style.display = "none"; const c = $("dChoices"); c.innerHTML = "";
+    options.forEach((o, i) => { const b = document.createElement("button"); b.className = "b"; b.textContent = o; b.onclick = (e) => { e.stopPropagation(); c.innerHTML = ""; $("dHint").style.display = ""; box.classList.add("hide"); sfxs.click(); resolve(i); }; c.appendChild(b); }); });
+}
 /* ---------- HUD ---------- */
 export function hud(s, stageInfo, dist, angle) {
   $("hN").textContent = s.name; $("hL").textContent = "Niv. " + s.lv; $("hHp").style.width = (s.hp / s.maxhp * 100) + "%"; $("hHpT").textContent = Math.ceil(s.hp) + " / " + s.maxhp; $("hXp").style.width = (s.xp / xpNeed(s.lv) * 100) + "%";
@@ -51,7 +55,8 @@ export function renderMenu(tab, s, cb) {
   if (tab === "stat") body.innerHTML = `<h2>${esc(s.name)} · ${c.label}</h2><p class="lead">Niveau ${s.lv} · expérience ${s.xp} / ${xpNeed(s.lv)} · ${s.kills} ennemis vaincus</p><div class="g2"><div class="pan"><b>Vie</b><br>${Math.ceil(s.hp)} / ${s.maxhp}</div><div class="pan"><b>Force</b><br>${s.stats.str}</div><div class="pan"><b>Agilité</b><br>${s.stats.agi}</div><div class="pan"><b>Esprit</b><br>${s.stats.spi}</div></div><p class="lead" style="margin-top:14px">La force augmente les coups d'arme, l'agilité les tirs, l'esprit les sorts.</p>`;
   if (tab === "pow") { const rows = Object.values(SPIRITS).filter((sp) => sp.classes.includes(s.cls)).map((sp) => `<div class="pan"><b>${sp.power.icon} ${sp.power.name}</b> ${s.powers[sp.power.id] ? '<span style="color:var(--ok)">· acquis (touche ' + sp.power.key + ")</span>" : '<span style="color:var(--mut)">· épreuve de ' + sp.name + " à passer</span>"}<br><small>${sp.power.desc}</small></div>`).join(""); body.innerHTML = `<h2>Pouvoirs des esprits</h2><p class="lead">On ne combat pas les esprits : on passe leur épreuve.</p><div class="g2">${rows}</div>`; }
   if (tab === "inv") { let h = ""; for (let i = 0; i < INV_MAX; i++) { const it = s.inv[i]; h += it ? `<div class="slot" data-i="${i}" title="${esc(ITEMS[it.id].name + " — " + ITEMS[it.id].desc)}">${ITEMS[it.id].icon}<small>${it.n}</small></div>` : `<div class="slot"></div>`; } body.innerHTML = `<h2>Inventaire (${s.inv.length}/${INV_MAX})</h2><p class="lead">Touche un objet pour l'utiliser.</p><div class="inv">${h}</div>`; body.querySelectorAll(".slot[data-i]").forEach((el) => (el.onclick = () => cb.useItem(+el.dataset.i))); }
-  if (tab === "quest") body.innerHTML = `<h2>Chapitre 1 · L'ombre sur la côte</h2>` + STAGES.slice(0, 6).map((q, i) => `<div class="pan" style="margin:8px 0;opacity:${i > s.stage ? 0.4 : 1}"><b>${i < s.stage ? "✔ " : i === s.stage ? "➤ " : "· "}${q.t}</b><br><small>${i <= s.stage ? q.d : "…"}</small></div>`).join("");
+  if (tab === "quest") body.innerHTML = `<h2>Chapitre 1 · L'ombre sur la côte</h2>` + STAGES.slice(0, 6).map((q, i) => `<div class="pan" style="margin:8px 0;opacity:${i > s.stage ? 0.4 : 1}"><b>${i < s.stage ? "✔ " : i === s.stage ? "➤ " : "· "}${q.t}</b><br><small>${i <= s.stage ? q.d : "…"}</small></div>`).join("") + `<h2 style="margin-top:18px">Quêtes secondaires</h2>` + Object.entries(SIDE).map(([k, q]) => { const st = s.side[k]; return st && st.started ? `<div class="pan" style="margin:8px 0"><b>${st.done ? "✔ " : "➤ "}${q.t}</b><br><small>${q.d} ${st.done ? "" : "(" + Math.min(st.n || 0, q.need) + "/" + q.need + ")"}</small></div>` : ""; }).join("") || "";
+  if (tab === "codex") { const rows = Object.entries(CODEX).filter(([k]) => s.codex[k]).map(([k, c]) => `<div class="pan"><b>${c.t}</b><p>${c.d}</p></div>`).join(""); body.innerHTML = `<h2>Journal</h2><p class="lead">Ce que ton héros apprend en chemin. Les faits sont à vérifier (voir docs/HISTOIRE.md).</p><div class="codex">${rows || "<p class='lead'>Rien pour l'instant.</p>"}</div>`; }
   if (tab === "sys") body.innerHTML = `<h2>Système</h2><div class="row" style="justify-content:flex-start"><button class="b big" id="mSave">Sauvegarder</button><button class="b" id="mSet">Réglages</button><button class="b ghost" id="mTitle">Retour au titre</button></div><p class="lead" id="mMsg"></p><p class="lead">Temps de jeu : ${Math.floor(s.playtime / 60)} min</p>`;
   if (tab === "sys") { $("mSave").onclick = () => { $("mMsg").textContent = cb.save() ? "Partie sauvegardée." : "Sauvegarde impossible."; }; $("mSet").onclick = cb.settings; $("mTitle").onclick = cb.toTitle; }
 }

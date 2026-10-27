@@ -1,9 +1,9 @@
 import { CLASSES, ITEMS } from "./data.js";
 export const xpNeed = (lv) => 60 + lv * 45;
 export const INV_MAX = 12;
-export function newState(cls, name) {
-  const c = CLASSES[cls], s = { cls, name: (name || "Héros").slice(0, 16), lv: 1, xp: 0, stats: { str: c.base.str, agi: c.base.agi, spi: c.base.spi }, maxhp: c.base.hp, hp: c.base.hp,
-    inv: [{ id: "herbe", n: 2 }], powers: {}, trials: {}, stage: 0, patrol: 0, bossDead: false, herbs: [], talked: {}, pos: [4, -4], seenShip: false, kills: 0, playtime: 0 };
+export function newState(cls, name, sex = "m") {
+  const c = CLASSES[cls], s = { sex, cls, name: (name || "Héros").slice(0, 16), lv: 1, xp: 0, stats: { str: c.base.str, agi: c.base.agi, spi: c.base.spi }, maxhp: c.base.hp, hp: c.base.hp,
+    inv: [{ id: "herbe", n: 2 }], powers: {}, trials: {}, stage: 0, patrol: 0, bossDead: false, herbs: [], talked: {}, pos: [4, -4], seenShip: false, kills: 0, playtime: 0, flags: {}, codex: {}, side: {} };
   return s;
 }
 export function gainItem(s, id, n = 1) {
