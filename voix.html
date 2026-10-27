@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>Choisir la voix</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{font:17px system-ui;background:#140d08;color:#f4ead2;max-width:760px;margin:0 auto;padding:20px}h1{color:#e0a93b;font-family:Georgia}.v{background:#1e140d;border:1px solid #4a3320;border-radius:14px;padding:12px 16px;margin:12px 0}audio{width:100%;margin-top:8px}p{color:#bfae88}</style>
+<h1>Choisis la voix du narrateur</h1><p>Même texte pour toutes les voix. Écoute et dis-moi laquelle est la plus naturelle.</p><div id="l"></div>
+<script>fetch("assets/audio/narration/essais/liste.json").then(r=>r.json()).then(L=>{document.getElementById("l").innerHTML=L.map(v=>`<div class="v"><b>${v.label}</b><audio controls preload="none" src="assets/audio/narration/essais/${v.k}.mp3"></audio></div>`).join("")})</script>
