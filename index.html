@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Contre le colonisateur · Le royaume du Dahomey</title>
+<meta name="description" content="RPG 3D d'aventure : incarne un héros du Dahomey face à la colonisation. Épreuves des esprits, combats et missions.">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<!-- title -->
+<section id="title" class="scr on">
+  <div class="bg" style="background-image:url(assets/art/title.jpg)"></div>
+  <div class="box">
+    <h1>Contre le colonisateur</h1><p class="sub">Le royaume du Dahomey</p>
+    <nav class="menu">
+      <button id="bNew" class="b big">Nouvelle partie</button>
+      <button id="bCont" class="b big">Continuer</button>
+      <button id="bSet" class="b">Réglages</button>
+    </nav>
+    <p class="fine">Projet étudiant · histoire romancée, à vérifier avec des sources · v0.1</p>
+  </div>
+</section>
+
+<!-- prologue -->
+<section id="prologue" class="scr">
+  <div class="bg kb" style="background-image:url(assets/art/prologue-ship.jpg)"></div>
+  <div class="story"><p id="prText"></p><button id="prNext" class="b big">Continuer</button> <button id="prSkip" class="b ghost">Passer</button></div>
+</section>
+
+<!-- class creation -->
+<section id="create" class="scr">
+  <div class="box wide">
+    <h2>Quelle sera ta voie ?</h2>
+    <div class="cards" id="cards"></div>
+    <label class="nm">Ton nom <input id="hName" maxlength="16" value="Kofi" autocomplete="off"></label>
+    <div class="row"><button id="bBack" class="b ghost">Retour</button><button id="bStart" class="b big">Commencer l'aventure</button></div>
+  </div>
+</section>
+
+<!-- settings -->
+<section id="settings" class="scr">
+  <div class="box">
+    <h2>Réglages</h2>
+    <label>Musique <input type="range" id="sMusic" min="0" max="100"></label>
+    <label>Effets sonores <input type="range" id="sSfx" min="0" max="100"></label>
+    <label>Ombres <select id="sShadow"><option value="0">Désactivées</option><option value="1">Moyennes</option><option value="2">Hautes</option></select></label>
+    <label>Sensibilité de la caméra <input type="range" id="sSens" min="30" max="200"></label>
+    <div class="row"><button id="bSetBack" class="b big">Retour</button></div>
+  </div>
+</section>
+
+<!-- HUD -->
+<div id="hud" class="hide">
+  <div class="stats"><div class="nmlv"><b id="hN"></b> <span id="hL"></span></div>
+    <div class="bar hp"><i id="hHp"></i><span id="hHpT"></span></div>
+    <div class="bar xp"><i id="hXp"></i></div></div>
+  <div class="quest"><h4 id="qT"></h4><p id="qD"></p><small id="qDist"></small></div>
+  <div class="arrow" id="arrow"><i></i></div>
+  <div class="powers" id="powers"></div>
+  <div class="prompt hide" id="prompt"></div>
+  <button class="mbtn" id="bMenu" aria-label="Menu">☰</button>
+  <div class="touch" id="touch"><div class="joy" id="joy"><i></i></div><button id="tAtk" class="tb">⚔</button><button id="tAct" class="tb small">E</button><button id="tP1" class="tb small p">1</button><button id="tP2" class="tb small p">2</button><button id="tHeal" class="tb small">♥</button></div>
+</div>
+<div id="toast"></div>
+<div id="banner"></div>
+
+<!-- dialogue -->
+<div id="dialog" class="hide"><b id="dWho"></b><p id="dTxt"></p><small>Clique ou appuie sur Entrée</small></div>
+
+<!-- trial -->
+<section id="trial" class="scr"><div class="box wide"><h2 id="tTitle"></h2><p id="tIntro" class="lead"></p><div id="tBody"></div><div class="row"><button id="tClose" class="b ghost">Quitter l'épreuve</button></div></div></section>
+
+<!-- menu -->
+<section id="menu" class="scr"><div class="box wide">
+  <div class="tabs" id="mTabs"><button data-t="stat" class="on">Statut</button><button data-t="pow">Pouvoirs</button><button data-t="inv">Inventaire</button><button data-t="quest">Quêtes</button><button data-t="sys">Système</button></div>
+  <div id="mBody"></div>
+  <div class="row"><button id="mClose" class="b big">Reprendre</button></div>
+</div></section>
+
+<!-- end / game over -->
+<section id="end" class="scr"><div class="box"><h2 id="eT"></h2><p id="eP" class="lead"></p><div class="row"><button id="eB" class="b big"></button></div></div></section>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
