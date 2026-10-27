@@ -12,6 +12,7 @@ export async function preloadModels() {
 }
 const find = (clips, re) => clips.find((c) => re.test(c.name));
 export function glbCharacter(key, targetHeight = 1.75) {
+  targetHeight *= 1.12;
   const g = cache.get(key); if (!g) return null;
   const root = new THREE.Group(), model = clone(g.scene); const box = new THREE.Box3().setFromObject(model), h = box.max.y - box.min.y || 1; model.scale.setScalar(targetHeight / h); model.position.y -= box.min.y * (targetHeight / h); root.add(model);
   model.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; if (o.material) o.material.envMapIntensity = 0.8; } });

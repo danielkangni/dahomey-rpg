@@ -14,6 +14,7 @@ import * as UI from "./ui.js";
 import * as Audio from "./audio.js";
 import * as Save from "./save.js";
 import { preloadModels } from "./glbmodels.js";
+import { playStory } from "./story.js";
 const { $, toast, banner, say } = UI;
 
 /* ---------- boot: renderer, world, loading screen ---------- */
@@ -33,7 +34,7 @@ function resize() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h
 Audio.setVol("music", settings.music / 100); Audio.setVol("sfx", settings.sfx / 100); world.setMood("gold");
 
 /* ---------- state ---------- */
-let S = null, P = null, mode = "title", chosen = "sorcier", sex = "m", camYaw = 2.4, camPitch = 0.38, camDist = 7.5, orbit = 0, saveTimer = 0, shake = 0, moodT = 0, musicMood = "title", moreau = null;
+let S = null, P = null, mode = "title", chosen = "sorcier", sex = "m", camYaw = 2.4, camPitch = 0.38, camDist = 8.4, orbit = 0, saveTimer = 0, shake = 0, moodT = 0, musicMood = "title", moreau = null;
 const keys = {}, inp = { mx: 0, mz: 0, run: false }; let joy = { id: null, x: 0, y: 0, ox: 0, oy: 0 }, look = { id: null, moved: 0, t: 0 }; const scripted = [];
 const requiredTrials = () => Object.values(SPIRITS).filter((sp) => sp.classes.includes(S.cls));
 const trialsDone = () => requiredTrials().every((sp) => S.powers[sp.power.id]);
@@ -188,7 +189,7 @@ function closeMenu() { UI.noScreen(); mode = "play"; autosave(); }
 function backToTitle() { mode = "title"; $("hud").classList.add("hide"); Audio.setMood("title"); $("bCont").disabled = !Save.hasSave(); UI.screen("title"); }
 document.querySelectorAll("#mTabs button").forEach((b) => (b.onclick = () => { menuTab = b.dataset.t; Audio.sfxs.click(); UI.renderMenu(menuTab, S, menuCb()); }));
 $("mClose").onclick = closeMenu; $("bMenu").onclick = openMenu;
-$("bNew").onclick = () => { Audio.init(); Audio.startMusic("title"); Audio.sfxs.click(); UI.screen("prologue"); prologue(); };
+$("bNew").onclick = async () => { Audio.init(); Audio.startMusic("title"); Audio.sfxs.click(); UI.noScreen(); const ok = await playStory().catch(() => false); if (ok) toCreate(); else { UI.screen("prologue"); prologue(); } };
 $("bCont").onclick = () => { Audio.init(); const sv = Save.loadSave(); if (sv) { Audio.sfxs.click(); startPlay(sv, false); } };
 $("bSet").onclick = () => { Audio.init(); Audio.startMusic("title"); prevScreen = "title"; UI.screen("settings"); };
 $("bSetBack").onclick = () => { Save.writeSettings(settings); UI.screen(prevScreen); if (prevScreen === "menu") UI.renderMenu(menuTab, S, menuCb()); };

@@ -25,3 +25,10 @@ La mémoire d'un peuple se défend aussi : l'histoire ne se gagne pas seulement 
 
 ## Ce qui est réel et ce qui est inventé
 Voir `docs/HISTOIRE.md`. Les personnages, le village et les épreuves sont inventés. Les repères (Dahomey, Agojie, guerres de 1890-1894, indépendance de 1960, restitution de 2021) sont à vérifier avec des sources.
+
+## Arcs de progression par voie (à développer dans les chapitres suivants)
+Idée de fond : chaque voie vit une **histoire différente** et le héros **évolue au fil du temps pour devenir le roi (ou la reine) de sa région**.
+- **Sorcier (Bokɔnɔ)** : apprenti du doyen, puis devin respecté, conseiller des chefs, gardien de la mémoire. Il règne par la sagesse et l'alliance avec les esprits (les épreuves de Legba, Hévioso... ouvrent des pouvoirs et des choix politiques).
+- **Guerrier** : recrue, puis chef de guerre, général, puis souverain par la loyauté de ses troupes. Il règne par la force juste et l'exemple.
+- **Archer (chasseur)** : éclaireur, maître des chemins et des forêts, chef des chasseurs, puis souverain des territoires qu'il connaît mieux que quiconque. Il règne par la connaissance du terrain et de ses gens.
+Pour chaque voie : des quêtes, des alliés, des rivaux et un dernier chapitre distincts, avec un grade qui change (apprenti, protecteur, chef, seigneur, roi/reine) et une gestion simple du territoire.

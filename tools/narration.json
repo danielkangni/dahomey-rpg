@@ -1,0 +1,15 @@
+{
+  "voice": "t2969wgUwHbBoVCZNHRU",
+  "voiceName": "Zion Aquila (voix âgée, profonde, chaleureuse)",
+  "settings": { "stability": 0.55, "similarity_boost": 0.8, "style": 0.3, "speed": 0.92 },
+  "segments": [
+    { "id": "01_royaume", "scene": "palace", "text": "Il fut un temps où le royaume du Dahomey faisait chanter les tambours jusqu'au cœur des forêts. Sa capitale, Abomey, gardait dans ses murs d'argile l'histoire de chaque roi, peinte en rouge, en jaune et en bleu." },
+    { "id": "02_cote", "scene": "map", "text": "Sur la côte, le port de Ouidah s'ouvrait sur l'océan. Depuis des siècles, des navires venaient jusque-là. Le royaume avait aussi sa part d'ombre : il avait lui-même pris part à la traite. Une vérité qu'il ne faut jamais taire." },
+    { "id": "03_navires", "scene": "ship", "text": "Mais dans les années mille huit cent quatre-vingt-dix, un autre vent se leva. Des navires plus grands, des hommes venus de loin, avec des fusils, des cartes, et une certitude : cette terre leur appartiendrait un jour." },
+    { "id": "04_resistance", "scene": "agojie", "text": "Au palais, le roi réunit ses conseillers. Les guerrières, les Agojie, aiguisèrent leurs lames. Les sorciers lurent les signes. Et dans chaque village, on se demanda : que devons-nous protéger, avant tout ?" },
+    { "id": "05_memoire", "scene": "reliefs", "text": "Ce que les canons ne peuvent pas prendre, c'est la mémoire. Les noms, les chants, les images gravées dans l'argile, les histoires que l'on raconte aux enfants. Voilà ce qui fait un peuple." },
+    { "id": "06_toi", "scene": "hero", "text": "Toi, tu n'es pas un roi. Pas encore. Tu es un jeune du village d'Adjahoué, et ce matin, caché dans les feuillages, tu as vu le navire." },
+    { "id": "07_voies", "scene": "paths", "text": "Sorcier, qui parle aux esprits et passe leurs épreuves. Guerrier, qui tient la ligne de sa lame. Ou archer, qui connaît la forêt mieux que personne. Chaque voie racontera une autre histoire." },
+    { "id": "08_destin", "scene": "king", "text": "Et si tu suis ta route jusqu'au bout, qui sait ? Les peuples ont toujours eu besoin de quelqu'un pour les guider. Peut-être qu'un jour, c'est ton nom que l'on chantera, comme celui d'un roi." }
+  ]
+}

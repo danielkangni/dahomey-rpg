@@ -38,18 +38,18 @@ function hippedRoof(w, d, h, over, material) {
 }
 
 export function fonHouse(group, { w = 6, d = 4.2, relief = null, doorSide = 1, tint = 0xe0b98a }) {
-  const m = mats(), wallM = m.wall.clone(); wallM.color.setHex(tint); const H = 2.3;
+  const m = mats(), wallM = m.wall.clone(); wallM.color.setHex(tint); const H = 2.75;
   const body = mesh(boxUV(w, H, d, 2.2), wallM); body.position.y = H / 2 + 0.25; group.add(body);
   const plinth = mesh(boxUV(w + 0.12, 0.5, d + 0.12, 2), m.earth); plinth.position.y = 0.25; group.add(plinth);
   const band = mesh(new THREE.BoxGeometry(w + 0.04, 0.1, d + 0.04), mats().dark); band.position.y = 0.55; group.add(band);
   const roof = hippedRoof(w, d, 2.2, 0.75, m.thatch); roof.position.y = H + 0.25; group.add(roof);
-  const dz = d / 2 * doorSide; const door = mesh(new THREE.BoxGeometry(0.95, 1.7, 0.1), m.plank); door.position.set(0, 1.1, dz + 0.04 * doorSide); group.add(door);
-  const frame = mesh(new THREE.BoxGeometry(1.15, 1.85, 0.08), m.dark); frame.position.set(0, 1.18, dz + 0.01 * doorSide); group.add(frame);
-  for (const s of [-1, 1]) { const win = mesh(new THREE.BoxGeometry(0.6, 0.5, 0.08), m.dark); win.position.set(s * (w / 2 - 1.3), 1.9, dz + 0.02 * doorSide); const sh = mesh(new THREE.BoxGeometry(0.5, 0.4, 0.04), new THREE.MeshStandardMaterial({ color: 0x120d08, roughness: 0.6 })); sh.position.set(s * (w / 2 - 1.3), 1.9, dz + 0.07 * doorSide); group.add(win, sh); }
-  if (relief) for (const [i, k] of relief.entries()) { const p = reliefPanel(k, 0.9, 1.1); p.position.set(-1.9 + i * 1.9 + (relief.length === 1 ? 1.9 : 0), 1.55, dz + 0.07 * doorSide); group.add(p); }
+  const dz = d / 2 * doorSide; const door = mesh(new THREE.BoxGeometry(1.05, 2.1, 0.1), m.plank); door.position.set(0, 1.3, dz + 0.04 * doorSide); group.add(door);
+  const frame = mesh(new THREE.BoxGeometry(1.25, 2.25, 0.08), m.dark); frame.position.set(0, 1.38, dz + 0.01 * doorSide); group.add(frame);
+  for (const s of [-1, 1]) { const win = mesh(new THREE.BoxGeometry(0.6, 0.5, 0.08), m.dark); win.position.set(s * (w / 2 - 1.3), 2.2, dz + 0.02 * doorSide); const sh = mesh(new THREE.BoxGeometry(0.5, 0.4, 0.04), new THREE.MeshStandardMaterial({ color: 0x120d08, roughness: 0.6 })); sh.position.set(s * (w / 2 - 1.3), 2.2, dz + 0.07 * doorSide); group.add(win, sh); }
+  if (relief) for (const [i, k] of relief.entries()) { const p = reliefPanel(k, 0.9, 1.1); p.position.set(-1.9 + i * 1.9 + (relief.length === 1 ? 1.9 : 0), 2.05, dz + 0.07 * doorSide); group.add(p); }
   // veranda posts
-  for (const s of [-1, 1]) { const po = mesh(new THREE.CylinderGeometry(0.09, 0.11, 2.4, 7), m.dark); po.position.set(s * (w / 2 - 0.2), 1.45, dz + 0.9 * doorSide); group.add(po); }
-  const vroof = mesh(new THREE.BoxGeometry(w * 0.9, 0.14, 1.2), m.thatch); vroof.position.set(0, 2.65, dz + 0.85 * doorSide); vroof.rotation.x = -0.12 * doorSide; group.add(vroof);
+  for (const s of [-1, 1]) { const po = mesh(new THREE.CylinderGeometry(0.09, 0.11, 2.9, 7), m.dark); po.position.set(s * (w / 2 - 0.2), 1.7, dz + 0.9 * doorSide); group.add(po); }
+  const vroof = mesh(new THREE.BoxGeometry(w * 0.9, 0.14, 1.2), m.thatch); vroof.position.set(0, 3.15, dz + 0.85 * doorSide); vroof.rotation.x = -0.12 * doorSide; group.add(vroof);
   return group;
 }
 export function granary(group) { const m = mats(); const legs = []; for (let i = 0; i < 5; i++) { const a = i / 5 * 6.28, l = mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.8, 6), m.dark); l.position.set(Math.cos(a) * 0.8, 0.4, Math.sin(a) * 0.8); group.add(l); }

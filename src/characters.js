@@ -86,7 +86,7 @@ function weapon(kind) {
 
 /* ---------- factory ---------- */
 export function createCharacter(o = {}) {
-  const f = o.sex === "f", bulk = o.bulk ?? 1, sc = (o.scale ?? 1) * (f ? 0.95 : 1), skinC = o.skin ?? SKIN[2], skin = skinMat(skinC), hairMat = mat(o.hairColor ?? 0x120d09, { roughness: 0.9 });
+  const f = o.sex === "f", bulk = o.bulk ?? 1, sc = (o.scale ?? 1) * (f ? 0.95 : 1) * 1.12, skinC = o.skin ?? SKIN[2], skin = skinMat(skinC), hairMat = mat(o.hairColor ?? 0x120d09, { roughness: 0.9 });
   const root = new THREE.Group(), rig = {}; const pelvis = joint(root, 0, 0.93, 0); rig.pelvis = pelvis;
   // torso body
   const tors = mesh(lathe(torsoProfile(f, bulk), 22), skin); tors.scale.z = 0.62; pelvis.add(tors);

@@ -14,7 +14,9 @@ const MOODS = {
 };
 const SCALES = { major: [293.7, 329.6, 370, 440, 493.9, 587.3, 659.3, 740], dorian: [293.7, 329.6, 349.2, 440, 493.9, 587.3, 659.3, 698.5], minor: [293.7, 349.2, 392, 440, 523.3, 587.3, 698.5, 784] };
 const ROOTS = [146.8, 220, 196, 146.8]; // D, A, G, D (bar progression)
-export function setVol(k, v) { vol[k] = v; if (musicBus) { musicBus.gain.value = vol.music * 0.7; sfxBus.gain.value = vol.sfx; } }
+let duck = 1;
+export function setDuck(v) { duck = v; if (musicBus) musicBus.gain.setTargetAtTime(vol.music * 0.7 * duck, ctx.currentTime, 0.4); }
+export function setVol(k, v) { vol[k] = v; if (musicBus) { musicBus.gain.value = vol.music * 0.7 * duck; sfxBus.gain.value = vol.sfx; } }
 export function init() {
   if (ctx) { if (ctx.state === "suspended") ctx.resume(); return; }
   const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; ctx = new AC();
