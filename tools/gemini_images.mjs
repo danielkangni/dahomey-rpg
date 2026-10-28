@@ -5,7 +5,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 const ENV = process.env.GEMINI_ENV_FILE || new URL("../.env", import.meta.url).pathname;
 const env = {}; if (existsSync(ENV)) for (const l of readFileSync(ENV, "utf8").split("\n")) { const m = l.match(/^([A-Z_]+)=(.*)$/); if (m) env[m[1]] = m[2].trim(); }
-const KEY = process.env.GEMINI_API_KEY || env.GEMINI_API_KEY, MODEL = env.GEMINI_IMAGE_MODEL || "gemini-2.5-flash-image";
+const KEY = process.env.GEMINI_API_KEY || env.GEMINI_API_KEY, MODEL = process.env.GEMINI_IMAGE_MODEL || env.GEMINI_IMAGE_MODEL || "gemini-2.5-flash-image";
 if (!KEY) { console.error("Clé absente : ouvre le fichier .env à la racine du dépôt et remplis GEMINI_API_KEY="); process.exit(2); }
 const H = { "x-goog-api-key": KEY, "content-type": "application/json" }, B = "https://generativelanguage.googleapis.com/v1beta";
 const arg = (n) => (process.argv.find((a) => a.startsWith("--" + n + "=")) || "").split("=")[1];
