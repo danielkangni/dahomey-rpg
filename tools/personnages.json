@@ -1,0 +1,19 @@
+{
+  "base": "Full-body character concept for a 3D game, front view, A-pose, arms slightly away from the body, open empty hands, plain light-grey background, soft even lighting, no shadow, single person, realistic proportions, detailed fabric and skin texture, photorealistic. Setting: Kingdom of Dahomey (West Africa), 1890s. No weapon in hands, no text, no watermark.",
+  "persos": {
+    "hero_sorcier_m": "Adult man, calm and dignified, a diviner-priest. Long white cloth wrapped around the body with a shoulder cloth bordered in indigo blue, indigo wrap skirt with gold stripes, strings of white cowrie shells around the neck, brass bracelets, thin white chalk marks on the face, short hair, barefoot.",
+    "hero_sorcier_f": "Adult woman, calm and dignified, a diviner-priestess with braided hair. Long white cloth wrapped around the body with a shoulder cloth bordered in indigo blue, indigo wrap skirt with gold stripes, strings of white cowrie shells around the neck, brass bracelets, thin white chalk marks on the face, barefoot.",
+    "hero_guerrier_m": "Athletic young man, short hair with a headband holding colorful feathers, sleeveless tunic with red and white vertical stripes, indigo shorts, cowrie necklace, brass bracelets, red patterned sash at the waist, barefoot.",
+    "hero_guerrier_f": "Strong athletic young woman, short hair with a headband holding colorful feathers, sleeveless tunic with red and white vertical stripes, indigo shorts, cowrie necklace, brass bracelets, red patterned sash at the waist, barefoot.",
+    "hero_archer_m": "Lean young hunter, short curly hair, brown leather sleeveless vest, short brown wrap shorts, green striped cloth sash, bead necklace, leather quiver with feathered arrows on the back, barefoot, alert expression.",
+    "hero_archer_f": "Lean young huntress with braided hair, brown leather sleeveless vest, short brown wrap shorts, green striped cloth sash, bead necklace, leather quiver with feathered arrows on the back, barefoot, alert expression.",
+    "doyen": "Elderly man, white beard and short white hair, kind and wise face, long white cloth wrapped around the body with an indigo-and-gold bordered cloth across the shoulder, bead necklace, brass bracelets, barefoot. Hands empty, no walking stick.",
+    "enfant": "Child about 9 years old, short hair, yellow shorts, bare chest, curious bright expression, barefoot.",
+    "marchande": "Middle-aged woman, red and cream wax-print wrapped top and blue-and-cream wax-print wrapper skirt, matching headwrap, bead necklace, brass bracelets, warm smile, barefoot.",
+    "forgeron": "Broad muscular middle-aged man, short hair, bare chest covered by a worn brown leather apron, dark brown work trousers, forearm bracelets, soot smudges on the arms, serious expression. No tools in hands.",
+    "agojie": "Strong adult woman warrior, short hair with a headband and colorful feathers, sleeveless tunic with blue and white vertical stripes, indigo shorts, cowrie necklace, brass bracelets, red patterned waist sash, confident stance, barefoot. No weapon, no shield.",
+    "soldat": "French marine infantry soldier, 1890s, dark blue jacket with brass buttons and a red collar, white trousers, white colonial pith helmet, leather boots, white belt. No rifle.",
+    "officier": "French officer, 1890s, dark blue coat with gold braid, red trousers, dark blue kepi cap, short beard, leather boots, gold sash. No sword in hand.",
+    "agbo": "Tall imposing man, dark flowing robes in black and deep red, red carved wooden mask over the face with small horns, strings of white cowrie shells and bones around the neck, brass bracelets, dark wrap skirt. No staff in hands."
+  }
+}
